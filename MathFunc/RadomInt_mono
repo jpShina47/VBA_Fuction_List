@@ -1,0 +1,3 @@
+Function RadomInt_mono(intMin As Integer, intMax As Integer) As Integer
+  RadomInt_mono = Int((intMax - intMin + 1) * Rnd + intMin)
+End Function
