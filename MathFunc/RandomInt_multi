@@ -1,0 +1,31 @@
+Function RadomInt_multi(intMin As Integer, intMax As Integer, ArrayNum As Integer) As Integer
+    Dim temp_array(1 To ArrayNum)
+    Dim RadomInt As Integer
+    Dim i
+    Dim j
+    Dim isDuplicate As Boolean
+    
+    '範囲の数より多い要素数を要求された場合はエラーを返す
+    If ArrayNum > (intMax - intMin + 1) Then
+        RandomInt_multi = CVErr(xlErrValue)
+        Exit Function
+    End If
+
+    Randomize ' 乱数の初期化
+
+    For i = 1 To ArrayNum - 1
+        Do
+            isDuplicate = False
+            RadomInt = Int((intMax - intMin + 1) * Rnd + intMin)
+            
+            '重複チェック
+            For j = 1 To i - 1
+                If temp_array(j) = RadomInt Then
+                    isDuplicate = True
+                    Exit For
+                End If
+            Next j
+        Loop While isDuplicate
+        temp_array(ArrayNumNow) = Int((intMax - intMin + 1) * Rnd + intMin)
+    Next i
+End Function
