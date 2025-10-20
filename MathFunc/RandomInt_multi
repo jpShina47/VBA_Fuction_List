@@ -1,4 +1,5 @@
 Function RadomInt_multi(intMin As Integer, intMax As Integer, ArrayNum As Integer) As Integer
+' 指定した範囲（intMin ~ intMax）の中で指定した数（ArrayNum）のランダムな整数を返す関数
     Dim temp_array(1 To ArrayNum)
     Dim RadomInt As Integer
     Dim i
