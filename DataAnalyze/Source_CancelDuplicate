@@ -1,0 +1,18 @@
+Function Source_CancelDuplicate(SourceWorksheet As Worksheet, SourceColumnNum As Integer, StartRow As Integer) As Variant
+'StartRow から SourceCoulumnNum列目の最終行 までのデータから重複無しの配列を作成して返す
+    Dim dict As Object
+    Dim lastRow As Long
+    Dim i As Long
+    
+    Set dict = CreateObject("Scripting.Dictionary")
+
+    lastRow = SourceWorksheet.Cells(SourceWorksheet.Rows.Count, SourceColumnNum).End(xlUp).Row
+
+    For i = StartRow To lastRow
+        If SourceWorksheet.Cells(i, SourceColumnNum).Value <> "" Then
+            dict(SourceWorksheet.Cells(i, SourceColumnNum).Value) = True
+        End If
+    Next i
+
+    Source_CancelDuplicate = dict.Keys
+End Function
