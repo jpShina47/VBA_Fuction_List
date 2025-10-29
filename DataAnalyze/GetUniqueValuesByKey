@@ -1,0 +1,30 @@
+Function GetUniqueValuesByKey(SourceWorksheet As Worksheet, KeyValue As Variant, KeyColumnIndex As Long, TargetColumnIndex As Long) As Variant
+'SourceWorksheet の KeyColumnIndex 列で KeyValue と一致するセルがあれば，その行の TargetColumnIndex 列の値を重複なしで抽出し、配列として返す。
+    Dim dict As Object
+    Dim lastRow As Long
+    Dim i As Long
+    Dim resultArray As Variant
+    
+    Set dict = CreateObject("Scripting.Dictionary")
+    
+    ' 最終行を取得
+    lastRow = SourceWorksheet.Cells(SourceWorksheet.Rows.Count, KeyColumnIndex).End(xlUp).Row
+    
+    ' データ行を走査
+    For i = 1 To lastRow
+        If SourceWorksheet.Cells(i, KeyColumnIndex).Value = KeyValue Then
+            If Not IsEmpty(SourceWorksheet.Cells(i, TargetColumnIndex).Value) Then
+                dict(SourceWorksheet.Cells(i, TargetColumnIndex).Value) = True
+            End If
+        End If
+    Next i
+    
+    ' 結果を配列化して返す
+    If dict.Count > 0 Then
+        resultArray = dict.Keys
+    Else
+        resultArray = Array() ' 空配列
+    End If
+    
+    GetUniqueValuesByKey = resultArray
+End Function
