@@ -1,0 +1,46 @@
+Function GetRowLabeledValuesByKey_Band(SourceWorksheet As Worksheet, KeyValue As Variant, KeyColumnIndex As Long, TargetColumnIndex As Long, horizontalNum As Integer) As Variant
+' KeyColumnIndex列目でKeyValueと一致する行を探し，
+' 一致した行のTargetColumnIndex列からTargetColumnIndex＋horizontalNum列までの値を結合して配列として返す
+' 各結合文字列の先頭にその行番号を付加する（例: "5 A B C"）
+
+    Dim i As Long, j As Long
+    Dim lastRow As Long
+    Dim concat As String
+    Dim temp As Collection
+    Dim result() As Variant
+    
+    Set temp = New Collection
+    
+    ' 最終行取得
+    lastRow = SourceWorksheet.Cells(SourceWorksheet.Rows.Count, KeyColumnIndex).End(xlUp).Row
+    
+    ' 各行をチェック
+    For i = 1 To lastRow
+        If SourceWorksheet.Cells(i, KeyColumnIndex).Value = KeyValue Then
+            concat = ""
+            ' 横方向に値を結合
+            For j = 0 To horizontalNum - 1
+                concat = concat & SourceWorksheet.Cells(i, TargetColumnIndex + j).Value & "  "
+            Next j
+            
+            ' 末尾の余分な空白削除
+            If Len(concat) > 2 Then concat = Left(concat, Len(concat) - 2)
+            
+            ' 行番号を先頭に付ける
+            concat = CStr(i) & " " & concat
+            
+            temp.Add concat
+        End If
+    Next i
+    
+    ' コレクションを配列に変換（ListBox表示用）
+    If temp.Count > 0 Then
+        ReDim result(1 To temp.Count, 1 To 1)
+        For i = 1 To temp.Count
+            result(i, 1) = temp(i)
+        Next i
+        GetRowLabeledValuesByKey_Band = result
+    Else
+        GetRowLabeledValuesByKey_Band = Empty
+    End If
+End Function
